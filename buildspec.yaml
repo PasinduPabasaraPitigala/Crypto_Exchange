@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 503561457120.dkr.ecr.eu-north-1.amazonaws.com
+  build:
+    commands:
+      - docker build -t aws-ijse .
+      - docker tag aws-ijse:latest 503561457120.dkr.ecr.eu-north-1.amazonaws.com/aws-ijse:latest
+  post_build:
+    commands:
+      - docker push 503561457120.dkr.ecr.eu-north-1.amazonaws.com/aws-ijse:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"mywebsite","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json

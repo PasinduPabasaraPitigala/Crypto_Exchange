@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-service-green
+  template:
+    metadata:
+      labels:
+        app: web-service-green
+    spec:
+      containers:
+      - name: web-service
+        image: pasindupabasarapitigala/pasindupabasarapitigala/web-service:latest
+        ports:
+        - containerPort: 3000
